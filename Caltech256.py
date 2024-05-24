@@ -26,6 +26,13 @@ class CaltechNoBirds(torchvision.datasets.Caltech256):
           puts it in root directory. If dataset is already downloaded, it is not
           downloaded again.
 
+
+  ct256 = CaltechNoBirds('.', download=True, transform = v2.Compose([
+    v2.ToImage(),  # Convert to tensor, only needed if you had a PIL image
+    v2.ToDtype(torch.float32, scale=True),  # Normalize expects float input
+    v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),]), 
+    target_transform=lambda x: 0)
+
           .. warning::
 
               To download the dataset `gdown <https://github.com/wkentaro/gdown>`_ is required.
