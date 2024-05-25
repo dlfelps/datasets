@@ -91,6 +91,17 @@ class CUB200(VisionDataset):
       training = filter(lambda x: x[1]==self.is_test, pairs)
 
       return list(map(lambda x: x[0], training))
+    
+
+    def get_id_class_mapper(self):
+      id_class_path = self.root.joinpath('image_class_labels.txt')
+
+      with open(id_class_path, 'r') as f:
+        lines = f.readlines()
+
+      parser = class_parser_closure()
+      pairs = map(parser, lines)
+      return dict(pairs)
 
     def __len__(self):
         return len(self.ids)
@@ -250,6 +261,15 @@ def split_parser_closure():
   def match(input):
     result = parse_two_numbers.match(input)
     return (int(result.group(1)), bool(int(result.group(2))))
+
+  return match
+
+def class_parser_closure():
+  parse_two_numbers = re.compile(r'(\d+) (\d+)')
+
+  def match(input):
+    result = parse_two_numbers.match(input)
+    return (int(result.group(1)), int(result.group(2)))
 
   return match
 
