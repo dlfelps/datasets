@@ -194,7 +194,7 @@ class CUB200_attributes():
       parser = attribute_parser_closure()
       pairs = map(parser, lines)
       df = pd.DataFrame(list(pairs), columns=['id', 'attr', 'present'])
-      attr_groups = recombine_attributes()
+      attr_groups, _ = recombine_attributes()
 
       y = dict()
       for name, grp in df.groupby('id'):
@@ -305,10 +305,12 @@ def recombine_attributes():
   df = pd.DataFrame(list(pairs), columns=['attr_num', 'attr_name'])
 
   attr_groups = []
+  names = []
   for name, grp in df.groupby('attr_name'):
     attr_groups.append(grp['attr_num'].tolist())
+    names.append(name)
 
-  return attr_groups
+  return attr_groups, names
 
 def merge_features(attr_groups, one_group):
   temp = one_group.copy()
