@@ -269,7 +269,7 @@ def class_parser_closure():
 
   def match(input):
     result = parse_two_numbers.match(input)
-    return (int(result.group(1)), int(result.group(2)))
+    return (int(result.group(1)), int(result.group(2))-1)
 
   return match
 
